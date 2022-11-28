@@ -77,9 +77,9 @@ impl State for Published {
         &post.content
     }
 }
-
+#[cfg(test)]
 mod tests {
-    use crate::Post;
+    use super::*;
 
     #[test]
     fn cant_view_draft_post_content() {
