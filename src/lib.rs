@@ -77,3 +77,45 @@ impl State for Published {
         &post.content
     }
 }
+
+mod tests {
+    use crate::Post;
+
+    #[test]
+    fn cant_view_draft_post_content() {
+        let mut post = Post::new();
+        post.add_text("I ate a salad for lunch today");
+
+        assert_eq!("",post.content());
+    }
+
+    #[test]
+    fn cant_update_post_without_approval() {
+        let mut post = Post::new();
+        post.add_text("I ate a salad for lunch today");
+        post.request_review();
+        // post.approve();
+
+        assert_eq!("",post.content())
+    }
+
+    #[test]
+    fn cant_approve_without_requesting_review() {
+        let mut post = Post::new();
+        post.add_text("I ate a salad for lunch today");
+        // post.request_review();
+        post.approve();
+
+        assert_eq!("",post.content())
+    }
+
+    #[test]
+    fn post_updates_after_review_and_approval() {
+        let mut post = Post::new();
+        post.add_text("I ate a salad for lunch today");
+        post.request_review();
+        post.approve();
+
+        assert_eq!("I ate a salad for lunch today",post.content())
+    }
+}
